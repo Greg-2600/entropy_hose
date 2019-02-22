@@ -14,8 +14,8 @@ tight_loop() {
   start_time=$(date +%s%N)
 
   for ((i=1; i<=$iterator; i++)) {  # START for loop 
-    : 			                        # \0x90 noop
-  }				                          # END for loop
+    : 			            # \0x90 noop
+  }				    # END for loop
 
   # time in nanoseconds when we exit the loop
   end_time=$(date +%s%N) 
@@ -54,8 +54,8 @@ main() {
 # enter main namespace
 
   while [ 1 ]; do  # while loop start
-    threading	     # actually forking, but whatever
-  done		         # exit while loop
+    threading	   # actually forking, but whatever
+  done		   # exit while loop
 
 # END main() namespace
 }
