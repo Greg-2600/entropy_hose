@@ -13,7 +13,7 @@ tight_loop() {
   # time in nanoseconds when we enter the loop
   start_time=$(date +%s%N)
 
-  for ((i=1; i<=$iterator; i++)) {  # START for loop 
+  for ((i=1; i<=iterator; i++)) {  # START for loop 
     : 			            # \0x90 noop
   }				    # END for loop
 
@@ -36,14 +36,9 @@ tight_loop() {
 
 threading() {
 # enter threading namespace
-
-  # ask the kernel for the number of cores
-  core_count=$(grep "model name" /proc/cpuinfo|wc -l)
-
-  # set an iterator and subtract one core
-  iterator=$(seq 2 $core_count)
-
-    for core_id in $iterator; do
+    i='0'
+    while [ $i -lt "$core_count" ]; do
+      i=$((i+1))
       tight_loop &
     done
     wait
@@ -53,12 +48,15 @@ threading() {
 main() {
 # enter main namespace
 
-  while [ 1 ]; do  # while loop start
+  while true; do   # while loop start
     threading	   # actually forking, but whatever
   done		   # exit while loop
 
 # END main() namespace
 }
+
+# ask the kernel for the number of cores
+core_count=$(grep -c "model name" /proc/cpuinfo)
 
 # init
 main
